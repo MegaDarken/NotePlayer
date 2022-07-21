@@ -2,12 +2,12 @@
 #include <math.h>
 
 //Constants
-const double proportionBetweenNotes = 1.0594630943592953;//result of 2^(1/12)
-const float lowestCFrequency = 16.35f;//C0
+#define proportionBetweenNotes 1.0594630943592953;//result of 2^(1/12)
+#define lowestCFrequency 16.35f;//C0
 
-const int squareWave = 0;
-const int sawtoothWave = 5;
-const int triangleWave = 10;
+#define squareWave 0
+#define sawtoothWave 5
+#define triangleWave 10
 
 //Notes
 float * calcNotes()
