@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <math.h>
 
+//Constants
+const int squareWave = 0;
+const int sawtoothWave = 5;
+const int triangleWave = 10;
+
 //Notes
 float * calcNotes()
 {
@@ -48,6 +53,28 @@ int triangle(int time, float pitch, int volume)
     return output;
 }
 
+int wave(int time, float pitch, int volume, int waveType)
+{
+
+    switch (waveType)
+    {
+    case squareWave:
+        return square(time, pitch, volume);
+        break;
+
+    case sawtoothWave:
+        return sawtooth(time, pitch, volume);
+        break;
+    
+    case triangleWave:
+        return triangle(time, pitch, volume);
+        break;
+
+    default:
+        break;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     float * notes = calcNotes();
@@ -62,9 +89,9 @@ int main(int argc, char *argv[])
         putchar(
         //printf(" %d",//Print output value for testing
             
-            //sawtooth(i,notes[48], 50)// +
-            //square(i,notes[57], 50)// +
-            triangle(i,notes[48], 50)
+            sawtooth(i,notes[46], 20) +
+            square(i,notes[57], 50) +
+            triangle(i,notes[48], 20)
             
         );
     }
