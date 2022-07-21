@@ -2,6 +2,9 @@
 #include <math.h>
 
 //Constants
+const double proportionBetweenNotes = 1.0594630943592953;//result of 2^(1/12)
+const float lowestCFrequency = 16.35f;//C0
+
 const int squareWave = 0;
 const int sawtoothWave = 5;
 const int triangleWave = 10;
@@ -11,9 +14,7 @@ float * calcNotes()
 {
     static float notes[8 * 12];
 
-    double proportionBetweenNotes = 1.0594630943592953;//result of 2^(1/12)
-
-    float lowestCFrequency = 16.35f;//C0
+    
 
     notes[0] = lowestCFrequency;
     
@@ -82,8 +83,6 @@ int main(int argc, char *argv[])
     //Music Loop
     for(int i = 0; ;i++)
     {
-    	int n=i>>14;
-    	int s=i>>17;
     
         //Send value to output
         putchar(
