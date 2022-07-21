@@ -76,7 +76,7 @@ int wave(int time, float pitch, int volume, int waveType)
     }
 }
 
-int main(int argc, char *argv[])
+void outputLoop()
 {
     float * notes = calcNotes();
 
@@ -98,4 +98,9 @@ int main(int argc, char *argv[])
         outputValue    
         );
     }
+}
+
+int main(int argc, char *argv[])
+{
+    outputLoop(); 
 }
