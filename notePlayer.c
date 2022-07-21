@@ -12,13 +12,13 @@ const int triangleWave = 10;
 //Notes
 float * calcNotes()
 {
-    static float notes[8 * 12];
+    static float notes[12 << 3];//* 8
 
     
 
     notes[0] = lowestCFrequency;
     
-    for (int i = 1; i < 8 * 12; i++)//sizeof(notes)/sizeof(float)
+    for (int i = 1; i < 12 << 3; i++)//sizeof(notes)/sizeof(float)
     {
         notes[i] = notes[i - 1] * proportionBetweenNotes;
     }
@@ -48,7 +48,7 @@ int square(int time, float pitch, int volume)
 
 int triangle(int time, float pitch, int volume)
 {
-    int output = (int)(time * (pitch / 8000) * volume) % (volume * 2);
+    int output = (int)(time * (pitch / 8000) * volume) % (volume << 1);
     output = output < volume ? volume - output : output - volume; 
     
     return output;
