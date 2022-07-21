@@ -10,16 +10,17 @@
 #define triangleWave 10
 
 //Notes
-float * calcNotes()
+float * calcFrequencies()
 {
     static float notes[12 << 3];//* 8
 
     
-
+    //The first note is C0
     notes[0] = lowestCFrequency;
     
     for (int i = 1; i < 12 << 3; i++)//sizeof(notes)/sizeof(float)
     {
+        //Every note is relitive to the previous one, with a proportion of 2^(1/12).
         notes[i] = notes[i - 1] * proportionBetweenNotes;
     }
     
@@ -31,6 +32,7 @@ float * calcNotes()
 //Waves
 int sawtooth(int time, float pitch, int volume)
 {
+    //Gradual increment to Volume before setting back to 0, the simplest wave to generate.
     int output = (int)(time * (pitch / 16000) * volume) % volume;
 
     return output;
@@ -40,6 +42,7 @@ int sawtooth(int time, float pitch, int volume)
 
 int square(int time, float pitch, int volume)
 {
+    //Value is switches between 0 and Volume for half of the times
     int output = (int)(time * (pitch / 16000) * volume) % volume;
     output = (output < (volume / 2) ? 0 : volume);
     
@@ -48,6 +51,7 @@ int square(int time, float pitch, int volume)
 
 int triangle(int time, float pitch, int volume)
 {
+    //Deincrement linearly to 0 then up to Volume, Mathematically simple form of sine wave.
     int output = (int)(time * (pitch / 8000) * volume) % (volume << 1);
     output = output < volume ? volume - output : output - volume; 
     
@@ -78,7 +82,7 @@ int wave(int time, float pitch, int volume, int waveType)
 
 void outputLoop()
 {
-    float * notes = calcNotes();
+    float * notes = calcFrequencies();
 
     //Music Loop
     for(int i = 0; ;i++)
@@ -86,8 +90,10 @@ void outputLoop()
     
         int outputValue = 0;
         
+        //For each sound channel
         for (size_t channel = 0; channel < 3; channel++)
         {
+            //Add this channel's wave to the output value.
             outputValue += wave(i, notes[57], 30, channel*5);
         }
          
