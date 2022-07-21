@@ -25,7 +25,7 @@ float * calcNotes()
     
     return notes;
     //48 should be middle C
-    //57 should be 
+    //57 should be A4
 }
 
 //Waves
@@ -84,14 +84,18 @@ int main(int argc, char *argv[])
     for(int i = 0; ;i++)
     {
     
+        int outputValue = 0;
+        
+        for (size_t channel = 0; channel < 3; channel++)
+        {
+            outputValue += wave(i, notes[57], 30, channel*5);
+        }
+         
+
         //Send value to output
         putchar(
         //printf(" %d",//Print output value for testing
-            
-            sawtooth(i,notes[46], 20) +
-            square(i,notes[57], 50) +
-            triangle(i,notes[48], 20)
-            
+        outputValue    
         );
     }
 }
