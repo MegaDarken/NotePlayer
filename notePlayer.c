@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "noteChannel.h"
+
 //Constants
 #define proportionBetweenNotes 1.0594630943592953;//result of 2^(1/12)
 #define lowestCFrequency 16.35f;//C0
@@ -58,6 +60,7 @@ int triangle(int time, float pitch, int volume)
     return output;
 }
 
+
 int wave(int time, float pitch, int volume, int waveType)
 {
 
@@ -82,19 +85,37 @@ int wave(int time, float pitch, int volume, int waveType)
 
 void outputLoop()
 {
+    //Scale of notes from C0 to B8
     float * notes = calcFrequencies();
+
+    //Load channel data
+    int channelCount = 1;
+
+    //Channel Array
+    struct noteChannel channels[channelCount];
+
+    channels[0].note = 40;
+    channels[0].volume = 50;
+    channels[0].waveType = 0;
+
+    channels[1].note = 60;
+    channels[1].volume = 30;
+    channels[1].waveType = 5;
 
     //Music Loop
     for(int i = 0; ;i++)
     {
-    
+        //Change channel values if needed
+
+
+        //Output starts at 0 for each loop
         int outputValue = 0;
         
         //For each sound channel
-        for (size_t channel = 0; channel < 3; channel++)
+        for (size_t channel = 0; channel <= sizeof(channels) / sizeof(channel); channel++)
         {
             //Add this channel's wave to the output value.
-            outputValue += wave(i, notes[57], 30, channel*5);
+            outputValue += wave(i, notes[channels[channel].note], channels[channel].volume, channels[channel].waveType);
         }
          
 
