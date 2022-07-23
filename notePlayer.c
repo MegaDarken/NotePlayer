@@ -20,7 +20,7 @@ float * calcFrequencies()
     //The first note is C0
     notes[0] = lowestCFrequency;
     
-    for (int i = 1; i < 12 << 3; i++)//sizeof(notes)/sizeof(float)
+    for (size_t i = 1; i <= sizeof(notes) / sizeof(float); i++)//sizeof(notes)/sizeof(float)
     {
         //Every note is relitive to the previous one, with a proportion of 2^(1/12).
         notes[i] = notes[i - 1] * proportionBetweenNotes;
