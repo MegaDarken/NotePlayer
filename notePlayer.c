@@ -31,6 +31,36 @@ float * calcFrequencies()
     //57 should be A4
 }
 
+char * noteWithinOctave(int index)
+{
+    return (char)('C' + index);
+    //C
+    //C#
+    //D
+    //D#
+    //E
+    //F
+    //F#
+    //G
+    //G#
+    //A
+    //A#
+    //B
+}
+
+char * note(int index)
+{
+    char noteString[2];//Letter, sharp/flat, Octave
+
+    //Note within octave
+    noteWithinOctave(index % 12);
+
+    //Which Octave
+    noteString[2] = (char)('0' + (int)(index / 12));
+
+    return noteString;
+}
+
 //Waves
 int sawtooth(int time, float pitch, int volume)
 {
