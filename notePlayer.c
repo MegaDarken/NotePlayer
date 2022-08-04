@@ -2,6 +2,7 @@
 #include <math.h>
 
 #include "noteChannel.h"
+#include "randomTable.h"
 
 //Constants
 #define proportionBetweenNotes 1.0594630943592953;//result of 2^(1/12)
