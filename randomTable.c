@@ -29,6 +29,6 @@ unsigned char getRandomUChar()
 {
     indices[0]++;
     
-    return rndtable[indices[0]]
+    return rndtable[indices[0]];
 }
 
