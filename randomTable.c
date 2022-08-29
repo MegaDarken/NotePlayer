@@ -32,3 +32,12 @@ unsigned char getRandomUChar()
     return rndtable[indices[0]];
 }
 
+unsigned int getRandomUInt()
+{
+    char index = getRandomUChar();
+
+    indices[index]++;
+    
+    return rndtable[indices[index]] + (index << 8);
+}
+
