@@ -45,22 +45,64 @@ char * noteWithinOctave(int index)
         break;
     
     //C#
-    //case 1:
-        //return "C";
-        //break;
+    case 1:
+        return "C#";
+        break;
     
     //D
+    case 2:
+        return "D";
+        break;
+    
     //D#
+    case 3:
+        return "D#";
+        break;
+    
+
     //E
+    case 4:
+        return "E";
+        break;
+    
     //F
+    case 5:
+        return "F";
+        break;
+    
     //F#
+    case 6:
+        return "F#";
+        break;
+    
+
     //G
+    case 7:
+        return "G";
+        break;
+    
     //G#
+    case 8:
+        return "G#";
+        break;
+    
     //A
+    case 9:
+        return "A";
+        break;
+    
     //A#
+    case 10:
+        return "A#";
+        break;
+    
     //B
+    case 11:
+        return "B";
+        break;
+    
     default:
-        return "!";
+        return "Invalid Note!";
         break;
     }
     
@@ -71,7 +113,7 @@ char * note(int index)
     char noteString[2];//Letter, sharp/flat, Octave
 
     //Note within octave
-    noteWithinOctave(index % 12);
+    noteString[0] = noteWithinOctave(index % 12);
 
     //Which Octave
     noteString[2] = (char)('0' + (int)(index / 12));
@@ -110,7 +152,7 @@ int triangle(int time, float pitch, int volume)
 
 int noise(int time, float pitch, int volume)
 {
-    return getRandomUChar() % volume;
+    return getRandomUInt() % volume;
 }
 
 
@@ -157,7 +199,7 @@ void outputLoop()
 
     channels[1].note = 60;
     channels[1].volume = 30;
-    channels[1].waveType = 5;
+    channels[1].waveType = 20;
 
     //Music Loop
     for(int i = 0; ;i++)
