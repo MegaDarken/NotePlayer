@@ -11,6 +11,8 @@
 #define squareWave 0
 #define sawtoothWave 5
 #define triangleWave 10
+#define sineWave 15
+#define noiseWave 20
 
 //Notes
 float * calcFrequencies()
@@ -34,9 +36,19 @@ float * calcFrequencies()
 
 char * noteWithinOctave(int index)
 {
-    return (char)('C' + index);
+    //return (char)('C' + index);
+    switch (index)
+    {
     //C
+    case 0:
+        return "C";
+        break;
+    
     //C#
+    //case 1:
+        //return "C";
+        //break;
+    
     //D
     //D#
     //E
@@ -47,6 +59,11 @@ char * noteWithinOctave(int index)
     //A
     //A#
     //B
+    default:
+        return "!";
+        break;
+    }
+    
 }
 
 char * note(int index)
@@ -91,6 +108,11 @@ int triangle(int time, float pitch, int volume)
     return output;
 }
 
+int noise(int time, float pitch, int volume)
+{
+    return getRandomUChar() % volume;
+}
+
 
 int wave(int time, float pitch, int volume, int waveType)
 {
@@ -107,6 +129,10 @@ int wave(int time, float pitch, int volume, int waveType)
     
     case triangleWave:
         return triangle(time, pitch, volume);
+        break;
+
+    case noiseWave:
+        return noise(time, pitch, volume);
         break;
 
     default:
@@ -127,7 +153,7 @@ void outputLoop()
 
     channels[0].note = 40;
     channels[0].volume = 50;
-    channels[0].waveType = 0;
+    channels[0].waveType = 20;
 
     channels[1].note = 60;
     channels[1].volume = 30;
