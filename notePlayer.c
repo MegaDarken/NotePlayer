@@ -8,11 +8,41 @@
 #define proportionBetweenNotes 1.0594630943592953;//result of 2^(1/12)
 #define lowestCFrequency 16.35f;//C0
 
-#define squareWave 0
-#define sawtoothWave 5
-#define triangleWave 10
-#define sineWave 15
-#define noiseWave 20
+#define squareWaveIndex 0
+#define sawtoothWaveIndex 5
+#define triangleWaveIndex 10
+#define sineWaveIndex 15
+#define noiseWaveIndex 20
+
+//nightcracker's fast sine solution https://www.gamedev.net/forums/topic/621589-extremely-fast-sin-approximation/
+double fast_sine(double x) {
+int k;
+double y;
+double z;
+
+z = x;
+z *= 0.3183098861837907;
+z += 6755399441055744.0;
+k = *((int *) &z);
+z = k;
+z *= 3.1415926535897932;
+x -= z;
+y = x;
+y *= x;
+z = 0.0073524681968701;
+z *= y;
+z -= 0.1652891139701474;
+z *= y;
+z += 0.9996919862959676;
+x *= z;
+k &= 1;
+k += k;
+z = k;
+z *= x;
+x -= z;
+
+return x;
+}
 
 //Notes
 float * calcFrequencies()
@@ -63,6 +93,11 @@ int triangle(int time, float pitch, int volume)
     return output;
 }
 
+int sineWave(int time, float pitch, int volume)
+{
+    return (int)(fast_sine(time * (pitch / 2546.47908947)) * volume);//2546.47908947 = 8000 / pi
+}
+
 int noise(int time, float pitch, int volume)
 {
     return getRandomUInt() % volume;
@@ -74,19 +109,23 @@ int wave(int time, float pitch, int volume, int waveType)
 
     switch (waveType)
     {
-    case squareWave:
+    case squareWaveIndex:
         return square(time, pitch, volume);
         break;
 
-    case sawtoothWave:
+    case sawtoothWaveIndex:
         return sawtooth(time, pitch, volume);
         break;
     
-    case triangleWave:
+    case triangleWaveIndex:
         return triangle(time, pitch, volume);
         break;
 
-    case noiseWave:
+    case sineWaveIndex:
+        return sineWave(time, pitch, volume);
+        break;
+
+    case noiseWaveIndex:
         return noise(time, pitch, volume);
         break;
 
@@ -108,11 +147,11 @@ void outputLoop()
 
     channels[0].note = 40;
     channels[0].volume = 50;
-    channels[0].waveType = 20;
+    channels[0].waveType = 15;
 
     channels[1].note = 60;
-    channels[1].volume = 30;
-    channels[1].waveType = 20;
+    channels[1].volume = 0;
+    channels[1].waveType = 15;
 
     //Music Loop
     for(int i = 0; ;i++)
