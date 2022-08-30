@@ -9,6 +9,7 @@
 #define lowestCFrequency 16.35f;//C0
 
 #define squareWaveIndex 0
+#define pulseWaveIndex 2
 #define sawtoothWaveIndex 5
 #define triangleWaveIndex 10
 #define sineWaveIndex 15
@@ -103,6 +104,13 @@ int noise(int time, float pitch, int volume)
     return getRandomUInt() % volume;
 }
 
+int pulse(int time, float pitch, int volume, float proportion)
+{
+    int output = (int)(time * (pitch * 0.0000625) * volume) % volume;
+    output = (output < (volume * proportion) ? 0 : volume);
+    
+    return output;
+}
 
 int wave(int time, float pitch, int volume, int waveType)
 {
@@ -129,7 +137,12 @@ int wave(int time, float pitch, int volume, int waveType)
         return noise(time, pitch, volume);
         break;
 
+    case pulseWaveIndex:
+        return pulse(time, pitch, volume, 0.2f);
+        break;
+
     default:
+        return 0;
         break;
     }
 }
