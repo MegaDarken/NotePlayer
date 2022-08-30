@@ -38,6 +38,18 @@ unsigned int getRandomUInt()
 
     indices[index]++;
     
-    return rndtable[indices[index]] + (index << 8);
+    return rndtable[indices[index]] + (rndtable[index] << 8);
 }
 
+unsigned long getRandomULong()
+{
+    char firstIndex = getRandomUChar();
+
+    indices[firstIndex]++;
+
+    char secondIndex = rndtable[indices[firstIndex]];
+
+    indices[secondIndex]++;
+
+    return rndtable[indices[secondIndex]] + (rndtable[secondIndex] << 8) + (rndtable[indices[firstIndex]] << 16) + (rndtable[firstIndex] << 24);
+}
