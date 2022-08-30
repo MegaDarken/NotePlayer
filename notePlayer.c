@@ -68,7 +68,7 @@ float * calcFrequencies()
 int sawtooth(int time, float pitch, int volume)
 {
     //Gradual increment to Volume before setting back to 0, the simplest wave to generate.
-    int output = (int)(time * (pitch / 16000) * volume) % volume;
+    int output = (int)(time * (pitch * 0000625) * volume) % volume;
 
     return output;
 }
@@ -78,8 +78,8 @@ int sawtooth(int time, float pitch, int volume)
 int square(int time, float pitch, int volume)
 {
     //Value is switches between 0 and Volume for half of the times
-    int output = (int)(time * (pitch / 16000) * volume) % volume;
-    output = (output < (volume / 2) ? 0 : volume);
+    int output = (int)(time * (pitch * 0.0000625) * volume) % volume;
+    output = (output < (volume >> 1) ? 0 : volume);
     
     return output;
 }
@@ -87,7 +87,7 @@ int square(int time, float pitch, int volume)
 int triangle(int time, float pitch, int volume)
 {
     //Deincrement linearly to 0 then up to Volume, Mathematically simple form of sine wave.
-    int output = (int)(time * (pitch / 8000) * volume) % (volume << 1);
+    int output = (int)(time * (pitch * 0.000125) * volume) % (volume << 1);
     output = output < volume ? volume - output : output - volume; 
     
     return output;
@@ -95,7 +95,7 @@ int triangle(int time, float pitch, int volume)
 
 int sineWave(int time, float pitch, int volume)
 {
-    return (int)(fast_sine(time * (pitch / 2546.47908947)) * volume);//2546.47908947 = 8000 / pi
+    return (int)(fast_sine(time * (pitch * 0.000392699081699)) * volume);//2546.47908947 = 8000 / pi
 }
 
 int noise(int time, float pitch, int volume)
