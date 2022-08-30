@@ -65,11 +65,16 @@ float * calcFrequencies()
     //57 should be A4
 }
 
+int wrapToVolume(int magnitude, int volume)
+{
+    return magnitude <= 0 ? 0 : magnitude % volume;
+}
+
 //Waves
 int sawtooth(int time, float pitch, int volume)
 {
     //Gradual increment to Volume before setting back to 0, the simplest wave to generate.
-    int output = (int)(time * (pitch * 0000625) * volume) % volume;
+    int output = wrapToVolume((int)(time * (pitch * 0000625) * volume), volume);
 
     return output;
 }
@@ -79,7 +84,7 @@ int sawtooth(int time, float pitch, int volume)
 int square(int time, float pitch, int volume)
 {
     //Value is switches between 0 and Volume for half of the times
-    int output = (int)(time * (pitch * 0.0000625) * volume) % volume;
+    int output = wrapToVolume((int)(time * (pitch * 0.0000625) * volume), volume);
     output = (output < (volume >> 1) ? 0 : volume);
     
     return output;
@@ -88,7 +93,7 @@ int square(int time, float pitch, int volume)
 int triangle(int time, float pitch, int volume)
 {
     //Deincrement linearly to 0 then up to Volume, Mathematically simple form of sine wave.
-    int output = (int)(time * (pitch * 0.000125) * volume) % (volume << 1);
+    int output = wrapToVolume((int)(time * (pitch * 0.000125) * volume), (volume << 1));
     output = output < volume ? volume - output : output - volume; 
     
     return output;
@@ -96,17 +101,17 @@ int triangle(int time, float pitch, int volume)
 
 int sineWave(int time, float pitch, int volume)
 {
-    return (int)(fast_sine(time * (pitch * 0.000392699081699)) * volume);//2546.47908947 = 8000 / pi
+    return wrapToVolume((int)(fast_sine(time * (pitch * 0.000392699081699)) * volume), volume);//2546.47908947 = 8000 / pi
 }
 
 int noise(int time, float pitch, int volume)
 {
-    return getRandomUInt() % volume;
+    return wrapToVolume(getRandomUInt(), volume);
 }
 
 int pulse(int time, float pitch, int volume, float proportion)
 {
-    int output = (int)(time * (pitch * 0.0000625) * volume) % volume;
+    int output = wrapToVolume((int)(time * (pitch * 0.0000625) * volume), volume);
     output = (output < (volume * proportion) ? 0 : volume);
     
     return output;
@@ -160,11 +165,11 @@ void outputLoop()
 
     channels[0].note = 40;
     channels[0].volume = 50;
-    channels[0].waveType = 15;
+    channels[0].waveType = 2;
 
     channels[1].note = 60;
     channels[1].volume = 0;
-    channels[1].waveType = 15;
+    channels[1].waveType = 2;
 
     //Music Loop
     for(int i = 0; ;i++)
