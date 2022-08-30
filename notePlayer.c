@@ -15,7 +15,10 @@
 #define sineWaveIndex 15
 #define noiseWaveIndex 20
 
-#define saxWaveIndex 30
+#define pianoWaveIndex 30
+#define saxWaveIndex 35
+#define fluteWaveIndex 36
+#define oboeWaveIndex 37
 
 //nightcracker's fast sine solution https://www.gamedev.net/forums/topic/621589-extremely-fast-sin-approximation/
 double fast_sine(double x) {
@@ -113,15 +116,26 @@ int pulse(int time, float pitch, int volume, float proportion)
 }
 
 //Combined wave(s)
+int piano(int time, float pitch, int volume)
+{
+    return ( square(time, pitch, volume * 0.8) + sineWave(time, pitch, volume * 0.2) );
+}
+
+
 int sax(int time, float pitch, int volume)
 {
     return ( sineWave(time, pitch, volume * 0.8) + sineWave(time, pitch * 4, volume * 0.2) );
 }
 
-//int flute(int time, float pitch, int volume)
-//{
-//    return ( sineWave(time, pitch, volume * 0.6) + sineWave(time, pitch * 2, volume * 0.4) );
-//}
+int flute(int time, float pitch, int volume)
+{
+    return ( sineWave(time, pitch, volume * 0.6) + sineWave(time, pitch * 2, volume * 0.4) );
+}
+
+int oboe(int time, float pitch, int volume)
+{
+    return ( sineWave(time, pitch, volume * 0.6) + sineWave(time, pitch * 3, volume * 0.3) + sineWave(time, pitch * 8, volume * 0.1) );
+}
 
 
 int wave(int time, float pitch, int volume, int waveType)
@@ -153,9 +167,22 @@ int wave(int time, float pitch, int volume, int waveType)
         return pulse(time, pitch, volume, 0.2f);
         break;
 
+    case pianoWaveIndex:
+        return piano(time, pitch, volume);
+        break;
+
     case saxWaveIndex:
         return sax(time, pitch, volume);
         break;
+
+    case fluteWaveIndex:
+        return flute(time, pitch, volume);
+        break;
+
+    case oboeWaveIndex:
+        return oboe(time, pitch, volume);
+        break;
+
 
     default:
         return 0;
@@ -174,11 +201,11 @@ void outputLoop()
     //Channel Array
     struct noteChannel channels[channelCount];
 
-    channels[0].note = 40;
+    channels[0].note = 40;//40 = middle C
     channels[0].volume = 0;
     channels[0].waveType = 30;
 
-    channels[1].note = 60;
+    channels[1].note = 60;//60 = A
     channels[1].volume = 60;
     channels[1].waveType = 30;
 
