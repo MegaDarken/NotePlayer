@@ -15,6 +15,8 @@
 #define sineWaveIndex 15
 #define noiseWaveIndex 20
 
+#define saxWaveIndex 30
+
 //nightcracker's fast sine solution https://www.gamedev.net/forums/topic/621589-extremely-fast-sin-approximation/
 double fast_sine(double x) {
 int k;
@@ -74,7 +76,7 @@ int wrapToVolume(int magnitude, int volume)
 int sawtooth(int time, float pitch, int volume)
 {
     //Gradual increment to Volume before setting back to 0, the simplest wave to generate.
-    return = wrapToVolume((int)(time * (pitch * 0000625) * volume), volume);
+    return wrapToVolume((int)(time * (pitch * 0000625) * volume), volume);
 }
 
 
@@ -110,6 +112,18 @@ int pulse(int time, float pitch, int volume, float proportion)
     return (output < (volume * proportion) ? 0 : volume);
 }
 
+//Combined wave(s)
+int sax(int time, float pitch, int volume)
+{
+    return ( sineWave(time, pitch, volume * 0.8) + sineWave(time, pitch * 4, volume * 0.2) );
+}
+
+//int flute(int time, float pitch, int volume)
+//{
+//    return ( sineWave(time, pitch, volume * 0.6) + sineWave(time, pitch * 2, volume * 0.4) );
+//}
+
+
 int wave(int time, float pitch, int volume, int waveType)
 {
 
@@ -139,6 +153,10 @@ int wave(int time, float pitch, int volume, int waveType)
         return pulse(time, pitch, volume, 0.2f);
         break;
 
+    case saxWaveIndex:
+        return sax(time, pitch, volume);
+        break;
+
     default:
         return 0;
         break;
@@ -157,12 +175,12 @@ void outputLoop()
     struct noteChannel channels[channelCount];
 
     channels[0].note = 40;
-    channels[0].volume = 50;
-    channels[0].waveType = 2;
+    channels[0].volume = 0;
+    channels[0].waveType = 30;
 
     channels[1].note = 60;
-    channels[1].volume = 0;
-    channels[1].waveType = 2;
+    channels[1].volume = 60;
+    channels[1].waveType = 30;
 
     //Music Loop
     for(int i = 0; ;i++)
