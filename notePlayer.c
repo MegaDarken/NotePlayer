@@ -74,9 +74,7 @@ int wrapToVolume(int magnitude, int volume)
 int sawtooth(int time, float pitch, int volume)
 {
     //Gradual increment to Volume before setting back to 0, the simplest wave to generate.
-    int output = wrapToVolume((int)(time * (pitch * 0000625) * volume), volume);
-
-    return output;
+    return = wrapToVolume((int)(time * (pitch * 0000625) * volume), volume);
 }
 
 
@@ -85,18 +83,15 @@ int square(int time, float pitch, int volume)
 {
     //Value is switches between 0 and Volume for half of the times
     int output = wrapToVolume((int)(time * (pitch * 0.0000625) * volume), volume);
-    output = (output < (volume >> 1) ? 0 : volume);
-    
-    return output;
+    return (output < (volume >> 1) ? 0 : volume);
 }
 
 int triangle(int time, float pitch, int volume)
 {
     //Deincrement linearly to 0 then up to Volume, Mathematically simple form of sine wave.
     int output = wrapToVolume((int)(time * (pitch * 0.000125) * volume), (volume << 1));
-    output = output < volume ? volume - output : output - volume; 
-    
-    return output;
+    return output < volume ? volume - output : output - volume; 
+
 }
 
 int sineWave(int time, float pitch, int volume)
@@ -112,9 +107,7 @@ int noise(int time, float pitch, int volume)
 int pulse(int time, float pitch, int volume, float proportion)
 {
     int output = wrapToVolume((int)(time * (pitch * 0.0000625) * volume), volume);
-    output = (output < (volume * proportion) ? 0 : volume);
-    
-    return output;
+    return (output < (volume * proportion) ? 0 : volume);
 }
 
 int wave(int time, float pitch, int volume, int waveType)
